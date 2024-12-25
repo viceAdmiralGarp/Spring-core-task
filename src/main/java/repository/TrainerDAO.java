@@ -10,28 +10,28 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class TrainerDAO {
+public class TrainerDAO implements CrudRepository<Trainer,String> {
 
 	private final Map<String, Trainer> trainerRepository = new HashMap<>();
 
-	public List<Trainer> getAllTrainers() {
+	@Override
+	public List<Trainer> getAll() {
 		return new ArrayList<>(trainerRepository.values());
 	}
 
-	public Optional<Trainer> findTrainerByUsername(String userName) {
+	@Override
+	public Optional<Trainer> findEntityByUserName(String userName) {
 		return Optional.ofNullable(trainerRepository.get(userName));
 	}
 
-	public Trainer save(Trainer trainer){
-		return trainerRepository.put(trainer.getUsername(),trainer);
+	@Override
+	public Trainer save(Trainer entity) {
+		return trainerRepository.put(entity.getUsername(), entity);
 	}
 
-	public void deleteTrainerByUserName(String userName) {
+
+	@Override
+	public void deleteEntityByUserName(String userName) {
 		trainerRepository.remove(userName);
 	}
-
-	public void updateTrainerNameByUserName(String newName, String userName){
-
-	}
-
 }
