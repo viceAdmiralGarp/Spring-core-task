@@ -2,8 +2,6 @@ package model;
 
 import entity.TrainingType;
 
-import java.time.LocalDate;
-
 public record TrainerDTO(
 		long userId,
 		String firstName,

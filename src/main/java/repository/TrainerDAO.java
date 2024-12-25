@@ -1,6 +1,7 @@
 package repository;
 
 import entity.Trainer;
+import exception.EntityDoesntExistByUserName;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -33,5 +34,12 @@ public class TrainerDAO implements CrudRepository<Trainer,String> {
 	@Override
 	public void deleteEntityByUserName(String userName) {
 		trainerRepository.remove(userName);
+	}
+
+	@Override
+	public void existsByUserName(String userName){
+		if(findEntityByUserName(userName).isEmpty())
+			throw new EntityDoesntExistByUserName(
+					"Entity with userName: '%s' doesn't exist".formatted(userName));
 	}
 }

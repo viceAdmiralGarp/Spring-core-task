@@ -3,7 +3,7 @@ package repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudRepository<E,U> {
+public interface CrudRepository<E, U> {
 
 	List<E> getAll();
 
@@ -13,6 +13,6 @@ public interface CrudRepository<E,U> {
 
 	void deleteEntityByUserName(String userName);
 
-
+	void existsByUserName(String userName);
 
 }

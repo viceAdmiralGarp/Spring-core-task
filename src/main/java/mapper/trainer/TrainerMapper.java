@@ -2,8 +2,14 @@ package mapper.trainer;
 
 import entity.Trainer;
 import model.TrainerDTO;
+import org.springframework.stereotype.Component;
 
 public class TrainerMapper {
+
+	private static final TrainerMapper INSTANCE = new TrainerMapper();
+
+	private TrainerMapper() {
+	}
 
 	public static TrainerDTO toDto(Trainer trainer) {
 		return new TrainerDTO(
@@ -27,5 +33,9 @@ public class TrainerMapper {
 				trainerDTO.isActive(),
 				trainerDTO.trainingType()
 		);
+	}
+
+	public static TrainerMapper getInstance(){
+		return INSTANCE;
 	}
 }
