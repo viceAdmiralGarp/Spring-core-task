@@ -23,5 +23,4 @@ public class Trainer extends User {
 		super(userId, firstName, lastName, username, password, isActive);
 		this.trainingType = trainingType;
 	}
-
 }

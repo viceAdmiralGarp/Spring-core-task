@@ -15,6 +15,8 @@ dependencies {
 
     implementation("org.springframework:spring-core:6.2.1")
     implementation("org.springframework:spring-context:6.2.1")
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
+
 
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
