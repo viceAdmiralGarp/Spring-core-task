@@ -2,6 +2,7 @@ package repository;
 
 import entity.Trainer;
 import exception.EntityDoesntExistByUserName;
+import exception.EntityExistByUserName;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class TrainerDAO implements CrudRepository<Trainer,String> {
+public class TrainerDAO implements CrudRepository<Trainer, String> {
 
 	private final Map<String, Trainer> trainerRepository = new HashMap<>();
 
@@ -37,9 +38,17 @@ public class TrainerDAO implements CrudRepository<Trainer,String> {
 	}
 
 	@Override
-	public void existsByUserName(String userName){
-		if(findEntityByUserName(userName).isEmpty())
+	public void entityDoesntExistsByUserName(String userName) {
+		if (findEntityByUserName(userName).isEmpty())
 			throw new EntityDoesntExistByUserName(
 					"Entity with userName: '%s' doesn't exist".formatted(userName));
+	}
+
+	@Override
+	public void entityExistsByUserName(String userName) {
+		if (findEntityByUserName(userName).isPresent()) {
+			throw new EntityExistByUserName(
+					"Entity with userName: '%s' already exist".formatted(userName));
+		}
 	}
 }
