@@ -31,10 +31,19 @@ public class TrainerDAO implements CrudRepository<Trainer, String> {
 		return trainerRepository.put(entity.getUsername(), entity);
 	}
 
-
 	@Override
 	public void deleteEntityByUserName(String userName) {
 		trainerRepository.remove(userName);
+	}
+
+	@Override
+	public void updateUserName(String userName, String newUserName) {
+		findEntityByUserName(userName)
+				.ifPresent(trainer -> {
+					deleteEntityByUserName(userName);
+					trainer.setUsername(newUserName);
+					save(trainer);
+				});
 	}
 
 	@Override

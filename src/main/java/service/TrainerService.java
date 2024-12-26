@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import repository.TrainerDAO;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -39,37 +39,33 @@ public class TrainerService {
 		trainerDAO.deleteEntityByUserName(userName);
 	}
 
-	public void updateTrainerFirstNameByUserName(String userName, String firstName) {
-		trainerDAO.entityDoesntExistsByUserName(userName);
-		trainerDAO.findEntityByUserName(userName).ifPresent(trainer -> trainer.setFirstName(firstName));
-	}
-
-	public void updateTrainerLastNameByUserName(String userName, String lastName) {
-		trainerDAO.entityDoesntExistsByUserName(userName);
-		trainerDAO.findEntityByUserName(userName).ifPresent(trainer -> trainer.setLastName(lastName));
-	}
-
 	public void updateTrainerUserNameByUserName(String userName, String newUserName) {
 		trainerDAO.entityDoesntExistsByUserName(userName);
 		trainerDAO.entityExistsByUserName(newUserName);
+		trainerDAO.updateUserName(userName,newUserName);
+	}
 
-		Optional<Trainer> entityByUserName = trainerDAO.findEntityByUserName(userName);
+	public void updateTrainerFirstNameByUserName(String userName, String firstName) {
+		updateFieldByUserName(userName,trainer -> trainer.setFirstName(firstName));
+	}
 
-		if (entityByUserName.isPresent()) {
-			trainerDAO.deleteEntityByUserName(userName);
-			Trainer trainer = entityByUserName.get();
-			trainer.setUsername(newUserName);
-			trainerDAO.save(trainer);
-		}
+	public void updateTrainerLastNameByUserName(String userName, String lastName) {
+		updateFieldByUserName(userName,trainer -> trainer.setLastName(lastName));
 	}
 
 	public void updateTrainerPasswordByUserName(String userName, String password) {
-		trainerDAO.entityDoesntExistsByUserName(userName);
-		trainerDAO.findEntityByUserName(userName).ifPresent(trainer -> trainer.setPassword(password));
+		updateFieldByUserName(userName, trainer -> trainer.setPassword(password));
 	}
 
 	public void updateTrainerActiveStatusByUserName(String userName, boolean isActive) {
-		trainerDAO.entityDoesntExistsByUserName(userName);
-		trainerDAO.findEntityByUserName(userName).ifPresent(trainer -> trainer.setActive(isActive));
+		updateFieldByUserName(userName, trainer -> trainer.setActive(isActive));
+	}
+
+	public void updateFieldByUserName(String userName, Consumer<Trainer> updateFunction) {
+		Trainer trainer = trainerDAO.findEntityByUserName(userName)
+				.orElseThrow(() -> new NullPointerException(
+						"Trainer with userName: '%s' not found".formatted(userName))
+				);
+		updateFunction.accept(trainer);
 	}
 }

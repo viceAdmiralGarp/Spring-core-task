@@ -13,6 +13,8 @@ public interface CrudRepository<E, U> {
 
 	void deleteEntityByUserName(String userName);
 
+	void updateUserName(String userName, String newUserName);
+
 	void entityDoesntExistsByUserName(String userName);
 
 	void entityExistsByUserName(String userName);
