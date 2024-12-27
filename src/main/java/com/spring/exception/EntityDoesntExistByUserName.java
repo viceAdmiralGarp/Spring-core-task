@@ -1,4 +1,4 @@
-package exception;
+package com.spring.exception;
 
 public class EntityDoesntExistByUserName extends RuntimeException{
 

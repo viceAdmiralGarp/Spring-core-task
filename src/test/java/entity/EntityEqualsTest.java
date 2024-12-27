@@ -1,5 +1,8 @@
 package entity;
 
+import com.spring.entity.Trainee;
+import com.spring.entity.Trainer;
+import com.spring.entity.Training;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static entity.TrainingType.YOGA;
+import static com.spring.entity.TrainingType.YOGA;
 import static java.time.temporal.ChronoUnit.HOURS;
 import static org.junit.jupiter.api.Assertions.*;
 

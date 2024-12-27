@@ -1,8 +1,8 @@
-package repository;
+package com.spring.repository;
 
-import entity.Trainer;
-import exception.EntityDoesntExistByUserName;
-import exception.EntityExistByUserName;
+import com.spring.exception.EntityExistByUserName;
+import com.spring.entity.Trainer;
+import com.spring.exception.EntityDoesntExistByUserName;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

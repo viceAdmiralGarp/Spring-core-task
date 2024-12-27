@@ -1,6 +1,6 @@
-package model;
+package com.spring.model;
 
-import entity.TrainingType;
+import com.spring.entity.TrainingType;
 
 public record TrainerDTO(
 		long userId,

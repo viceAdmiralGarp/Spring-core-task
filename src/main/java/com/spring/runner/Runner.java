@@ -1,9 +1,9 @@
-package runner;
+package com.spring.runner;
 
-import entity.TrainingType;
-import model.TrainerDTO;
-import repository.TrainerDAO;
-import service.TrainerService;
+import com.spring.model.TrainerDTO;
+import com.spring.entity.TrainingType;
+import com.spring.repository.TrainerDAO;
+import com.spring.service.TrainerService;
 
 public class Runner {
 	public static void main(String[] args) {
@@ -15,7 +15,6 @@ public class Runner {
 		trainerService.createTrainer(trainer1);
 		trainerService.createTrainer(trainer2);
 		trainerService.createTrainer(trainer3);
-		trainerService.updateTrainerFirstNameByUserName("johndoe","kek");
 		System.out.println(trainerService.findByTrainerByUsername("johndoe"));
 
 	}

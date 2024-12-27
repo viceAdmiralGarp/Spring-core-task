@@ -1,4 +1,4 @@
-package entity;
+package com.spring.entity;
 
 public enum TrainingType {
 	YOGA,

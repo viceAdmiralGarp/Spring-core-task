@@ -1,16 +1,18 @@
-package service;
+package com.spring.service;
 
-import entity.Trainer;
+import com.spring.entity.Trainer;
+import com.spring.model.TrainerDTO;
+import com.spring.repository.TrainerDAO;
+import com.spring.trainer.TrainerMapper;
 import lombok.RequiredArgsConstructor;
-import mapper.trainer.TrainerMapper;
-import model.TrainerDTO;
 import org.springframework.stereotype.Service;
-import repository.TrainerDAO;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class TrainerService {
 
@@ -20,7 +22,7 @@ public class TrainerService {
 		return trainerDAO.getAll();
 	}
 
-	public Trainer findByTrainerByUsername(String userName) {
+	public Trainer findByTrainerByUsername( String userName) {
 		return trainerDAO.findEntityByUserName(userName)
 				.orElseThrow(() -> new NullPointerException(
 						"Trainer with userName: '%s' not found".formatted(userName))

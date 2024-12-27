@@ -1,8 +1,7 @@
-package mapper.trainer;
+package com.spring.trainer;
 
-import entity.Trainer;
-import model.TrainerDTO;
-import org.springframework.stereotype.Component;
+import com.spring.model.TrainerDTO;
+import com.spring.entity.Trainer;
 
 public class TrainerMapper {
 
