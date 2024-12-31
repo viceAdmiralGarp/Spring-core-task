@@ -1,4 +1,4 @@
-package com.spring.trainer;
+package com.spring.mapper.trainer;
 
 import com.spring.model.TrainerDTO;
 import com.spring.entity.Trainer;
