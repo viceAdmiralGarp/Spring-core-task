@@ -3,11 +3,11 @@ package com.spring.repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudRepository<E, U> {
+public interface CrudRepository<E, ID> {
 
 	List<E> getAll();
 
-	Optional<E> findEntityByUserName(U userName);
+	Optional<E> findEntityById(ID id);
 
 	E save(E entity);
 

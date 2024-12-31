@@ -4,6 +4,7 @@ import com.spring.entity.Trainee;
 import com.spring.entity.Trainer;
 import com.spring.entity.Training;
 import com.spring.entity.TrainingType;
+import com.spring.entity.User;
 import com.spring.storage.Storage;
 import com.spring.utils.EntityUtils;
 import jakarta.annotation.PostConstruct;
@@ -69,23 +70,23 @@ public class DataLoader {
 		}
 	}
 
-	private List<String> readFile(String filePath) throws IOException {
+	public List<String> readFile(String filePath) throws IOException {
 		return Files.readAllLines(Paths.get(filePath));
 	}
 
 	private Trainer parseTrainer(String[] parts) {
-		CommonUserData data = CommonUserData.extractCommonUserData(parts);
+		User data = User.extractUserData(parts);
 		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[5]);
-		return new Trainer(data.userId(), data.firstName(), data.lastName(),
-				data.userName(), data.password(), data.isActive(), trainingType);
+		return new Trainer(data.getUserId(), data.getFirstName(), data.getLastName(),
+				data.getUsername(), data.getPassword(), data.isActive(), trainingType);
 	}
 
 	private Trainee parseTrainee(String[] parts) {
-		CommonUserData data = CommonUserData.extractCommonUserData(parts);
+		User data = User.extractUserData(parts);
 		String program = parts[5];
 		LocalDate enrollmentDate = LocalDate.parse(parts[6]);
-		return new Trainee(data.userId(), data.firstName(), data.lastName(),
-				data.userName(), data.password(), data.isActive(), program, enrollmentDate);
+		return new Trainee(data.getUserId(), data.getFirstName(), data.getLastName(),
+				data.getUsername(), data.getPassword(), data.isActive(), program, enrollmentDate);
 	}
 
 	private Training parseTraining(String[] parts) {
@@ -96,18 +97,5 @@ public class DataLoader {
 		LocalDateTime date = LocalDateTime.parse(parts[5]);
 		Duration duration = Duration.parse(parts[6]);
 		return new Training(traineeId, trainerId, trainingName, trainingType, date, duration);
-	}
-
-	public record CommonUserData(long userId, String firstName, String lastName, String userName, String password,
-								 boolean isActive) {
-		public static CommonUserData extractCommonUserData(String[] parts) {
-			long userId = Long.parseLong(parts[1]);
-			String firstName = parts[2];
-			String lastName = parts[3];
-			String userName = EntityUtils.generateUserName(firstName, lastName);
-			String password = EntityUtils.generatePassword();
-			boolean isActive = Boolean.parseBoolean(parts[4]);
-			return new CommonUserData(userId, firstName, lastName, userName, password, isActive);
-		}
 	}
 }

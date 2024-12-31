@@ -23,7 +23,7 @@ public class TrainerService {
 	}
 
 	public Trainer findByTrainerByUsername( String userName) {
-		return trainerDAO.findEntityByUserName(userName)
+		return trainerDAO.findEntityById(userName)
 				.orElseThrow(() -> new NullPointerException(
 						"Trainer with userName: '%s' not found".formatted(userName))
 				);
@@ -64,7 +64,7 @@ public class TrainerService {
 	}
 
 	public void updateFieldByUserName(String userName, Consumer<Trainer> updateFunction) {
-		Trainer trainer = trainerDAO.findEntityByUserName(userName)
+		Trainer trainer = trainerDAO.findEntityById(userName)
 				.orElseThrow(() -> new NullPointerException(
 						"Trainer with userName: '%s' not found".formatted(userName))
 				);
