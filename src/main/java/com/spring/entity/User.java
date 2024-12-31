@@ -28,9 +28,9 @@ public class User {
 		long userId = Long.parseLong(parts[1]);
 		String firstName = parts[2];
 		String lastName = parts[3];
-		String userName = EntityUtils.generateUserName(firstName, lastName);
-		String password = EntityUtils.generatePassword();
-		boolean isActive = Boolean.parseBoolean(parts[4]);
+		String userName = parts[4];
+		String password = parts[5];
+		boolean isActive = Boolean.parseBoolean(parts[6]);
 		return new User(userId, firstName, lastName, userName, password, isActive);
 	}
 }

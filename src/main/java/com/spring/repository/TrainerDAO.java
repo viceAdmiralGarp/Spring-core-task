@@ -16,14 +16,15 @@ import static java.util.stream.Collectors.toList;
 
 @Repository
 @RequiredArgsConstructor
-public class TrainerDAO implements CrudRepository<Trainer, String> {
+public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	private final Storage storage;
+	private static final String KEY = "Trainer";
 
 	@Override
 	public List<Trainer> getAll() {
 		return storage.getStorage()
-				.getOrDefault("Trainer", Map.of())
+				.getOrDefault(KEY, Map.of())
 				.values()
 				.stream()
 				.filter(Trainer.class::isInstance)
@@ -32,8 +33,15 @@ public class TrainerDAO implements CrudRepository<Trainer, String> {
 	}
 
 	@Override
-	public Optional<Trainer> findEntityById(String s) {
-		return Optional.empty();
+	public Optional<Trainer> findEntityById(Long id) {
+		return storage.getStorage()
+				.getOrDefault(KEY, Map.of())
+				.values()
+				.stream()
+				.filter(Trainer.class::isInstance)
+				.map(Trainer.class::cast)
+				.filter(trainer -> trainer.getUserId() == id)
+				.findFirst();
 	}
 
 
@@ -43,27 +51,8 @@ public class TrainerDAO implements CrudRepository<Trainer, String> {
 	}
 
 	@Override
-	public void deleteEntityByUserName(String userName) {
+	public void deleteEntityById(Long aLong) {
 
 	}
 
-	@Override
-	public void updateUserName(String userName, String newUserName) {
-
-	}
-
-	@Override
-	public void entityDoesntExistsByUserName(String userName) {
-		if (findEntityById(userName).isEmpty())
-			throw new EntityDoesntExistByUserName(
-					"Entity with userName: '%s' doesn't exist".formatted(userName));
-	}
-
-	@Override
-	public void entityExistsByUserName(String userName) {
-		if (findEntityById(userName).isPresent()) {
-			throw new EntityExistByUserName(
-					"Entity with userName: '%s' already exist".formatted(userName));
-		}
-	}
 }

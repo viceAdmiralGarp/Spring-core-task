@@ -11,12 +11,6 @@ public interface CrudRepository<E, ID> {
 
 	E save(E entity);
 
-	void deleteEntityByUserName(String userName);
-
-	void updateUserName(String userName, String newUserName);
-
-	void entityDoesntExistsByUserName(String userName);
-
-	void entityExistsByUserName(String userName);
+	void deleteEntityById(ID id);
 
 }

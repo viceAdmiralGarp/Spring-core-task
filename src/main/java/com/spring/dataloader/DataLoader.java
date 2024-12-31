@@ -6,8 +6,8 @@ import com.spring.entity.Training;
 import com.spring.entity.TrainingType;
 import com.spring.entity.User;
 import com.spring.storage.Storage;
-import com.spring.utils.EntityUtils;
 import jakarta.annotation.PostConstruct;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
+@Data
 @RequiredArgsConstructor
 public class DataLoader {
 
@@ -76,15 +77,15 @@ public class DataLoader {
 
 	private Trainer parseTrainer(String[] parts) {
 		User data = User.extractUserData(parts);
-		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[5]);
+		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[7]);
 		return new Trainer(data.getUserId(), data.getFirstName(), data.getLastName(),
 				data.getUsername(), data.getPassword(), data.isActive(), trainingType);
 	}
 
 	private Trainee parseTrainee(String[] parts) {
 		User data = User.extractUserData(parts);
-		String program = parts[5];
-		LocalDate enrollmentDate = LocalDate.parse(parts[6]);
+		String program = parts[7];
+		LocalDate enrollmentDate = LocalDate.parse(parts[8]);
 		return new Trainee(data.getUserId(), data.getFirstName(), data.getLastName(),
 				data.getUsername(), data.getPassword(), data.isActive(), program, enrollmentDate);
 	}
