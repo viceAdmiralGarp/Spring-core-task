@@ -1,13 +1,13 @@
 package com.spring.repository;
 
-import com.spring.exception.EntityExistByUserName;
 import com.spring.entity.Trainer;
-import com.spring.exception.EntityDoesntExistByUserName;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,13 +23,17 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	@Override
 	public List<Trainer> getAll() {
-		return storage.getStorage()
-				.getOrDefault(KEY, Map.of())
-				.values()
+		Map<String, Map<String, Object>> storageData = storage.getStorage();
+		Map<String, Object> trainersMap = storageData.get(KEY);
+
+		if (trainersMap == null) {
+			return Collections.emptyList();
+		}
+
+		return trainersMap.values()
 				.stream()
-				.filter(Trainer.class::isInstance)
-				.map(Trainer.class::cast)
-				.collect(toList());
+				.map(value -> (Trainer) value)
+				.toList();
 	}
 
 	@Override
@@ -44,15 +48,16 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 				.findFirst();
 	}
 
-
 	@Override
-	public Trainer save(Trainer entity) {
-		return null;
+	public Trainer save(String userName, Trainer entity) {
+		return (Trainer) storage.getStorage().get(KEY).put(userName, entity);
 	}
 
 	@Override
-	public void deleteEntityById(Long aLong) {
+	public void deleteEntityById(Long id) {
+		Trainer trainer = findEntityById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Trainer with ID %s was not found".formatted(id)));
 
+		storage.getStorage().get(KEY).remove(trainer.getUsername());
 	}
-
 }

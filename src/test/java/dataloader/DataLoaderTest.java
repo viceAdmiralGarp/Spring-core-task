@@ -4,123 +4,104 @@ import com.spring.dataloader.DataLoader;
 import com.spring.entity.Trainee;
 import com.spring.entity.Trainer;
 import com.spring.entity.Training;
+import com.spring.entity.TrainingType;
 import com.spring.storage.Storage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 
-@ExtendWith(MockitoExtension.class)
-public class DataLoaderTest {
+class DataLoaderTest {
+
+	@InjectMocks
+	@Spy
+	private DataLoader dataLoader;
 
 	@Mock
 	private Storage storage;
 
-	@InjectMocks
-	private DataLoader dataLoader;
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
 
-	private String createTempFile(String content) throws IOException {
-		File tempFile = File.createTempFile("test", ".txt");
-		tempFile.deleteOnExit();
-		Files.writeString(Paths.get(tempFile.getAbsolutePath()), content);
-		return tempFile.getAbsolutePath();
+		ReflectionTestUtils.setField(dataLoader, "trainersFilePath", "src/test/resources/trainers.csv");
+		ReflectionTestUtils.setField(dataLoader, "traineesFilePath", "src/test/resources/trainees.csv");
+		ReflectionTestUtils.setField(dataLoader, "trainingsFilePath", "src/test/resources/trainings.csv");
 	}
 
-	//need to check
 	@Test
-	void loadData_validFiles_loadsDataSuccessfully() throws IOException {
-		String trainersContent = "Trainer,1,Susan,White,true,CARDIO\nTrainer,2,Chris,Walker,false,BODYBUILDING";
-		String traineesContent = "Trainee,3,John,Doe,true,program1,2000-05-15\nTrainee,4,Jane,Smith,false,program2,1995-07-20";
-		String trainingsContent = "Training,3,2,Strength Training,STRENGTH,2025-01-01T12:00:00,PT2H\nTraining,4,1,Cardio Blast,CARDIO,2024-12-31T10:00:00,PT1H30M";
+	void testLoadDataSuccess() throws IOException {
+		String trainersData = "Trainer,101,Mike,Johnson,Mike.Johnson,kVHkib2AQG,true,YOGA";
+		String traineesData = "Trainee,1,John,Doe,John.Doe,6LUq7lM5nW,true,123 Elm Street,2000-05-15";
+		String trainingsData = "Training,1,101,Morning Yoga,YOGA,2024-12-30T08:00:00,PT1H";
 
-		String trainersFile = createTempFile(trainersContent);
-		String traineesFile = createTempFile(traineesContent);
-		String trainingsFile = createTempFile(trainingsContent);
-
-		setField(dataLoader, "trainersFilePath", trainersFile);
-		setField(dataLoader, "traineesFilePath", traineesFile);
-		setField(dataLoader, "trainingsFilePath", trainingsFile);
+		doReturn(List.of(trainersData)).when(dataLoader).readFile("src/test/resources/trainers.csv");
+		doReturn(List.of(traineesData)).when(dataLoader).readFile("src/test/resources/trainees.csv");
+		doReturn(List.of(trainingsData)).when(dataLoader).readFile("src/test/resources/trainings.csv");
 
 		dataLoader.loadData();
 
-		verify(storage, times(1)).addTrainer(eq("Susan.White"), any(Trainer.class));
-		verify(storage, times(1)).addTrainer(eq("Chris.Walker"), any(Trainer.class));
+		verify(storage, times(1)).addTrainer(eq("Mike.Johnson"), any(Trainer.class));
 		verify(storage, times(1)).addTrainee(eq("John.Doe"), any(Trainee.class));
-		verify(storage, times(1)).addTrainee(eq("Jane.Smith"), any(Trainee.class));
-		verify(storage, times(2)).addTraining(anyString(), any(Training.class));
-
-		Files.delete(Paths.get(trainersFile));
-		Files.delete(Paths.get(traineesFile));
-		Files.delete(Paths.get(trainingsFile));
+		verify(storage, times(1)).addTraining(eq("Morning Yoga"), any(Training.class));
 	}
 
 	@Test
-	void loadData_invalidTrainerFile_throwsRuntimeException() throws IOException {
-		String trainersContent = "Trainer,1,Mike,Johnson,true,INVALID_TRAINING_TYPE";
-		String trainersFile = createTempFile(trainersContent);
+	void testLoadDataIOException() throws IOException {
+		doThrow(new IOException("File not found")).when(dataLoader).readFile(anyString());
 
-		setField(dataLoader, "trainersFilePath", trainersFile);
-		setField(dataLoader, "traineesFilePath", createTempFile(""));
-		setField(dataLoader, "trainingsFilePath", createTempFile(""));
-
-		assertThrows(IllegalArgumentException.class, () -> dataLoader.loadData());
-
-		Files.delete(Paths.get(trainersFile));
+		RuntimeException exception = assertThrows(RuntimeException.class, dataLoader::loadData);
+		assertEquals("Failed to initialize data from files", exception.getMessage());
 	}
 
 	@Test
-	void loadData_invalidTraineeFile_throwsRuntimeException() throws IOException {
-		String traineesContent = "Trainee,1,John,Doe,true,program1,INVALID_DATE";
-		String traineesFile = createTempFile(traineesContent);
+	void testParseTrainer() {
+		String[] trainerParts = {"Trainer", "101", "Mike", "Johnson", "Mike.Johnson", "kVHkib2AQG", "true", "YOGA"};
+		Trainer trainer = ReflectionTestUtils.invokeMethod(dataLoader, "parseTrainer", (Object) trainerParts);
 
-		setField(dataLoader, "trainersFilePath", createTempFile(""));
-		setField(dataLoader, "traineesFilePath", traineesFile);
-		setField(dataLoader, "trainingsFilePath", createTempFile(""));
-
-		assertThrows(java.time.format.DateTimeParseException.class, () -> dataLoader.loadData());
-
-		Files.delete(Paths.get(traineesFile));
+		assertNotNull(trainer);
+		assertEquals(101L, trainer.getUserId());
+		assertEquals("Mike.Johnson", trainer.getUsername());
+		assertEquals(TrainingType.YOGA, trainer.getTrainingType());
 	}
 
 	@Test
-	void loadData_invalidTrainingFile_throwsRuntimeException() throws IOException {
-		String trainingsContent = "Training,1,1,Strength Training,STRENGTH,INVALID_DATE,PT1H";
-		String trainingsFile = createTempFile(trainingsContent);
+	void testParseTrainee() {
+		String[] traineeParts = {"Trainee", "1", "John", "Doe", "John.Doe", "6LUq7lM5nW", "true", "123 Elm Street", "2000-05-15"};
+		Trainee trainee = ReflectionTestUtils.invokeMethod(dataLoader, "parseTrainee", (Object) traineeParts);
 
-		setField(dataLoader, "trainersFilePath", createTempFile(""));
-		setField(dataLoader, "traineesFilePath", createTempFile(""));
-		setField(dataLoader, "trainingsFilePath", trainingsFile);
-
-		assertThrows(java.time.format.DateTimeParseException.class, () -> dataLoader.loadData());
-
-		Files.delete(Paths.get(trainingsFile));
+		assertNotNull(trainee);
+		assertEquals(1L, trainee.getUserId());
+		assertEquals("John.Doe", trainee.getUsername());
+		assertEquals("123 Elm Street", trainee.getAddress());
 	}
 
 	@Test
-	void readFile_validFile_returnsLines() throws IOException {
-		String content = "line1\nline2\nline3";
-		String testFile = createTempFile(content);
+	void testParseTraining() {
+		String[] trainingParts = {"Training", "1", "101", "Morning Yoga", "YOGA", "2024-12-30T08:00:00", "PT1H"};
+		Training training = ReflectionTestUtils.invokeMethod(dataLoader, "parseTraining", (Object) trainingParts);
 
-		java.util.List<String> lines = dataLoader.readFile(testFile);
-
-		assertEquals(3, lines.size());
-		assertEquals("line1", lines.get(0));
-		Files.delete(Paths.get(testFile));
+		assertNotNull(training);
+		assertEquals(1L, training.getTraineeId());
+		assertEquals("Morning Yoga", training.getTrainingName());
+		assertEquals(TrainingType.YOGA, training.getTrainingType());
 	}
 }
