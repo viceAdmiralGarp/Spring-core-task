@@ -13,9 +13,11 @@ public class Runner {
 			var storage = context.getBean(TrainerService.class);
 			Trainer trainer = new Trainer(1, "Jon", "kek", "kekes", "123", true, TrainingType.YOGA);
 			TrainerDTO trainerDto = new TrainerDTO(2, "lol", "kek", true, TrainingType.YOGA);
-			storage.updateTrainerById(102L, trainerDto);
+			TrainerDTO trainerDto1 = new TrainerDTO(3, "lol", "kek", true, TrainingType.YOGA);
+			storage.createTrainer(trainerDto);
+			storage.createTrainer(trainerDto1);
 			System.out.println(storage.findTrainerById(2L));
-			System.out.println(storage.findTrainerById(102L));
+			System.out.println(storage.findTrainerById(3L));
 		}
 	}
 }

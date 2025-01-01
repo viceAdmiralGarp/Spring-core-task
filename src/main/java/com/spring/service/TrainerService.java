@@ -3,7 +3,6 @@ package com.spring.service;
 import com.spring.entity.Trainer;
 import com.spring.model.TrainerDTO;
 import com.spring.repository.TrainerDAO;
-import com.spring.mapper.trainer.TrainerMapper;
 import com.spring.utils.EntityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

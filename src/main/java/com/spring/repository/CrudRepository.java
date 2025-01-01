@@ -1,7 +1,5 @@
 package com.spring.repository;
 
-import com.spring.entity.Trainer;
-
 import java.util.List;
 import java.util.Optional;
 
