@@ -25,9 +25,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 		Map<String, Map<String, Object>> storageData = storage.getStorage();
 		Map<String, Object> traineeMap = storageData.get(key);
 
-		if (traineeMap == null) {
-			return Collections.emptyList();
-		}
+		if (traineeMap == null) return Collections.emptyList();
 
 		return traineeMap.values()
 				.stream()

@@ -25,9 +25,7 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 		Map<String, Map<String, Object>> storageData = storage.getStorage();
 		Map<String, Object> trainersMap = storageData.get(key);
 
-		if (trainersMap == null) {
-			return Collections.emptyList();
-		}
+		if (trainersMap == null) return Collections.emptyList();
 
 		return trainersMap.values()
 				.stream()
