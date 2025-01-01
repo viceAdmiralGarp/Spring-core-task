@@ -1,6 +1,5 @@
 package com.spring.repository;
 
-import com.spring.entity.Trainer;
 import com.spring.entity.Training;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

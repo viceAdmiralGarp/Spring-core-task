@@ -91,12 +91,13 @@ public class DataLoader {
 	}
 
 	private Training parseTraining(String[] parts) {
-		long traineeId = Long.parseLong(parts[1]);
-		long trainerId = Long.parseLong(parts[2]);
-		String trainingName = parts[3];
-		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[4]);
-		LocalDateTime date = LocalDateTime.parse(parts[5]);
-		Duration duration = Duration.parse(parts[6]);
-		return new Training(traineeId, trainerId, trainingName, trainingType, date, duration);
+		long trainingId = Long.parseLong(parts[1]);
+		long traineeId = Long.parseLong(parts[2]);
+		long trainerId = Long.parseLong(parts[3]);
+		String trainingName = parts[4];
+		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[5]);
+		LocalDateTime date = LocalDateTime.parse(parts[6]);
+		Duration duration = Duration.parse(parts[7]);
+		return new Training(trainingId, traineeId, trainerId, trainingName, trainingType, date, duration);
 	}
 }
