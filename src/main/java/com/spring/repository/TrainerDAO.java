@@ -3,6 +3,7 @@ package com.spring.repository;
 import com.spring.entity.Trainer;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -15,12 +16,14 @@ import java.util.Optional;
 public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	private final Storage storage;
-	private static final String KEY = "Trainer";
+
+	@Value("${storage.trainers.key}")
+	private String key;
 
 	@Override
 	public List<Trainer> getAll() {
 		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> trainersMap = storageData.get(KEY);
+		Map<String, Object> trainersMap = storageData.get(key);
 
 		if (trainersMap == null) {
 			return Collections.emptyList();
@@ -35,7 +38,7 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 	@Override
 	public Optional<Trainer> findEntityById(Long id) {
 		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> trainersMap = storageData.get(KEY);
+		Map<String, Object> trainersMap = storageData.get(key);
 
 		return trainersMap.values()
 				.stream()
@@ -46,7 +49,7 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	@Override
 	public Trainer save(String userName, Trainer entity) {
-		return (Trainer) storage.getStorage().get(KEY).put(userName, entity);
+		return (Trainer) storage.getStorage().get(key).put(userName, entity);
 	}
 
 	@Override
@@ -54,6 +57,6 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 		Trainer trainer = findEntityById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Trainer with ID %s was not found".formatted(id)));
 
-		storage.getStorage().get(KEY).remove(trainer.getUsername());
+		storage.getStorage().get(key).remove(trainer.getUsername());
 	}
 }

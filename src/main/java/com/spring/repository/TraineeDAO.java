@@ -1,9 +1,9 @@
 package com.spring.repository;
 
 import com.spring.entity.Trainee;
-import com.spring.entity.Trainer;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -16,12 +16,14 @@ import java.util.Optional;
 public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	private final Storage storage;
-	private static final String KEY = "Trainee";
+
+	@Value("${storage.trainees.key}")
+	private String key;
 
 	@Override
 	public List<Trainee> getAll() {
 		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> traineeMap = storageData.get(KEY);
+		Map<String, Object> traineeMap = storageData.get(key);
 
 		if (traineeMap == null) {
 			return Collections.emptyList();
@@ -36,7 +38,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 	@Override
 	public Optional<Trainee> findEntityById(Long id) {
 		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> traineeMap = storageData.get(KEY);
+		Map<String, Object> traineeMap = storageData.get(key);
 
 		return traineeMap.values()
 				.stream()
@@ -47,7 +49,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	@Override
 	public Trainee save(String userName, Trainee entity) {
-		return (Trainee) storage.getStorage().get(KEY).put(userName, entity);
+		return (Trainee) storage.getStorage().get(key).put(userName, entity);
 	}
 
 	@Override
@@ -55,6 +57,6 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 		Trainee trainee = findEntityById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Trainer with ID %s was not found".formatted(id)));
 
-		storage.getStorage().get(KEY).remove(trainee.getUsername());
+		storage.getStorage().get(key).remove(trainee.getUsername());
 	}
 }
