@@ -5,14 +5,10 @@ import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,12 +34,12 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	@Override
 	public Optional<Trainer> findEntityById(Long id) {
-		return storage.getStorage()
-				.getOrDefault(KEY, Map.of())
-				.values()
+		Map<String, Map<String, Object>> storageData = storage.getStorage();
+		Map<String, Object> trainersMap = storageData.get(KEY);
+
+		return trainersMap.values()
 				.stream()
-				.filter(Trainer.class::isInstance)
-				.map(Trainer.class::cast)
+				.map(value -> (Trainer) value)
 				.filter(trainer -> trainer.getUserId() == id)
 				.findFirst();
 	}
