@@ -31,8 +31,8 @@ import static org.mockito.Mockito.verify;
 
 class DataLoaderTest {
 
-	@InjectMocks
 	@Spy
+	@InjectMocks
 	private DataLoader dataLoader;
 
 	@Mock

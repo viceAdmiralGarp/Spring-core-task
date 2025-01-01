@@ -1,6 +1,5 @@
 package com.spring.entity;
 
-import com.spring.utils.EntityUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

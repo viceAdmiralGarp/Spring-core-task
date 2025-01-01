@@ -4,12 +4,12 @@ import com.spring.entity.Trainer;
 import com.spring.model.TrainerDTO;
 import com.spring.repository.TrainerDAO;
 import com.spring.mapper.trainer.TrainerMapper;
+import com.spring.utils.EntityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
 @Validated
@@ -22,52 +22,34 @@ public class TrainerService {
 		return trainerDAO.getAll();
 	}
 
-//	public Trainer findByTrainerByUsername( String userName) {
-//		return trainerDAO.findEntityById(userName)
-//				.orElseThrow(() -> new NullPointerException(
-//						"Trainer with userName: '%s' not found".formatted(userName))
-//				);
-//	}
-//
-//	public Trainer createTrainer(TrainerDTO trainer) {
-//		trainerDAO.entityExistsByUserName(trainer.username());
-//		Trainer entity = TrainerMapper.toEntity(trainer);
-//		trainerDAO.save(entity);
-//		return entity;
-//	}
-//
-//	public void deleteTrainerByUserName(String userName) {
-//		trainerDAO.entityDoesntExistsByUserName(userName);
-//		trainerDAO.deleteEntityByUserName(userName);
-//	}
-//
-//	public void updateTrainerUserNameByUserName(String userName, String newUserName) {
-//		trainerDAO.entityDoesntExistsByUserName(userName);
-//		trainerDAO.entityExistsByUserName(newUserName);
-//		trainerDAO.updateUserName(userName,newUserName);
-//	}
-//
-//	public void updateTrainerFirstNameByUserName(String userName, String firstName) {
-//		updateFieldByUserName(userName,trainer -> trainer.setFirstName(firstName));
-//	}
-//
-//	public void updateTrainerLastNameByUserName(String userName, String lastName) {
-//		updateFieldByUserName(userName,trainer -> trainer.setLastName(lastName));
-//	}
-//
-//	public void updateTrainerPasswordByUserName(String userName, String password) {
-//		updateFieldByUserName(userName, trainer -> trainer.setPassword(password));
-//	}
-//
-//	public void updateTrainerActiveStatusByUserName(String userName, boolean isActive) {
-//		updateFieldByUserName(userName, trainer -> trainer.setActive(isActive));
-//	}
-//
-//	public void updateFieldByUserName(String userName, Consumer<Trainer> updateFunction) {
-//		Trainer trainer = trainerDAO.findEntityById(userName)
-//				.orElseThrow(() -> new NullPointerException(
-//						"Trainer with userName: '%s' not found".formatted(userName))
-//				);
-//		updateFunction.accept(trainer);
-//	}
+	public Trainer findTrainerById(Long id) {
+		return trainerDAO.findEntityById(id)
+				.orElseThrow(() -> new IllegalArgumentException(
+						"Trainer with ID: '%s' not found".formatted(id))
+				);
+	}
+
+	public void createTrainer(TrainerDTO trainerDTO) {
+		String userName = EntityUtils.generateUserName(trainerDTO.firstName(), trainerDTO.lastName());
+		String password = EntityUtils.generatePassword();
+		Trainer trainer = new Trainer(trainerDTO.userId(), trainerDTO.firstName(), trainerDTO.lastName(), userName, password, trainerDTO.isActive(), trainerDTO.trainingType());
+		trainerDAO.save(userName, trainer);
+	}
+
+	public void deleteTrainerById(Long id) {
+		trainerDAO.deleteEntityById(id);
+	}
+
+	public void updateTrainerById(Long id, TrainerDTO trainerDTO) {
+		Trainer trainer = findTrainerById(id);
+		String userName = EntityUtils.generateUserName(trainerDTO.firstName(), trainerDTO.lastName());
+
+		trainer.setUserId(trainerDTO.userId());
+		trainer.setFirstName(trainerDTO.firstName());
+		trainer.setLastName(trainerDTO.lastName());
+		trainer.setUsername(userName);
+		trainer.setActive(trainerDTO.isActive());
+		trainer.setTrainingType(trainerDTO.trainingType());
+	}
+
 }

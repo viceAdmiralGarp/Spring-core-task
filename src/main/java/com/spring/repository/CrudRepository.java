@@ -15,4 +15,5 @@ public interface CrudRepository<E, ID> {
 
 	void deleteEntityById(ID id);
 
+
 }
