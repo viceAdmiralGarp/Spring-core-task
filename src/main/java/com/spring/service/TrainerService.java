@@ -23,7 +23,7 @@ public class TrainerService {
 
 	public Trainer findTrainerById(Long id) {
 		return trainerDAO.findEntityById(id)
-				.orElseThrow(() -> new IllegalArgumentException(
+				.orElseThrow(() -> new NullPointerException(
 						"Trainer with ID: '%s' not found".formatted(id))
 				);
 	}

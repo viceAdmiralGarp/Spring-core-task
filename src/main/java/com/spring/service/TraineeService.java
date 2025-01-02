@@ -21,9 +21,9 @@ public class TraineeService {
 		return traineeDAO.getAll();
 	}
 
-	public Trainee findTrainerById(Long id) {
+	public Trainee findTraineeById(Long id) {
 		return traineeDAO.findEntityById(id)
-				.orElseThrow(() -> new IllegalArgumentException(
+				.orElseThrow(() -> new NullPointerException(
 						"Trainee with ID: '%s' not found".formatted(id))
 				);
 	}
@@ -41,7 +41,7 @@ public class TraineeService {
 	}
 
 	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {
-		Trainee trainee = findTrainerById(id);
+		Trainee trainee = findTraineeById(id);
 		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
 
 		trainee.setUserId(traineeDTO.userId());
