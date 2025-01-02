@@ -44,7 +44,9 @@ class EntityEqualsTest {
 				false,
 				YOGA);
 
-		training = new Training(1,
+		training = new Training(
+				3,
+				1,
 				1,
 				"Yoga",
 				YOGA,
@@ -96,7 +98,9 @@ class EntityEqualsTest {
 
 	@Test
 	void shouldValidateEqualityAndInequalityForTrainingInstances() {
-		assertNotEquals(training, new Training(1,
+		assertNotEquals(training, new Training(
+				3,
+				1,
 				2,
 				"Yoga",
 				YOGA,
@@ -105,7 +109,9 @@ class EntityEqualsTest {
 						LocalTime.of(18, 30)),
 				Duration.of(1, HOURS)));
 
-		assertEquals(training,new Training(1,
+		assertEquals(training,new Training(
+				3,
+				1,
 				1,
 				"Yoga",
 				YOGA,

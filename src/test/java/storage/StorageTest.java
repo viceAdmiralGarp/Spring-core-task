@@ -44,7 +44,7 @@ public class StorageTest {
 
 	@Test
 	void addTraining_addsTrainingToStorage() {
-		Training training = new Training(1L, 2L, "trainingName", TrainingType.CARDIO, LocalDateTime.now(), Duration.ofHours(1));
+		Training training = new Training(3L, 1L, 2L, "trainingName", TrainingType.CARDIO, LocalDateTime.now(), Duration.ofHours(1));
 		storage.addTraining("trainingName", training);
 		Map<String, Object> trainings = storage.getStorage().get("Training");
 		assertNotNull(trainings);
