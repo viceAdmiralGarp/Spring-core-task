@@ -1,103 +1,70 @@
 package com.spring.dataloader;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.spring.entity.Trainee;
 import com.spring.entity.Trainer;
 import com.spring.entity.Training;
-import com.spring.entity.TrainingType;
-import com.spring.entity.User;
 import com.spring.storage.Storage;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Component
 @Data
+@Component
 @RequiredArgsConstructor
 public class DataLoader {
 
-	@Value("${storage.trainers.file}")
-	private String trainersFilePath;
-
-	@Value("${storage.trainees.file}")
-	private String traineesFilePath;
-
-	@Value("${storage.trainings.file}")
-	private String trainingsFilePath;
+	@Value("${storage.init.file}")
+	private String init;
 
 	private final Storage storage;
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@PostConstruct
-	public void loadData() {
-		try {
-			processTrainerFile();
-			processTraineeFile();
-			processTrainingFile();
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to initialize data from files", e);
+	private void loadData() throws IOException {
+
+		objectMapper.registerModule(new JavaTimeModule());
+
+		File file = new File(init);
+		DataContainer dataContainer = objectMapper.readValue(file, DataContainer.class);
+
+		addEntitiesToStorage(dataContainer.getTrainers(), Trainer.class);
+		addEntitiesToStorage(dataContainer.getTrainees(), Trainee.class);
+		addEntitiesToStorage(dataContainer.getTraining(), Training.class);
+	}
+
+	private <T> void addEntitiesToStorage(List<T> entities, Class<T> entityClass) {
+		if (entities != null && !entities.isEmpty()) {
+			for (T entity : entities) {
+				String key = determineKey(entity);
+				storage.addEntity(entityClass, key, entity);
+			}
 		}
 	}
 
-	private void processTrainerFile() throws IOException {
-		List<String> lines = readFile(trainersFilePath);
-		for (String line : lines) {
-			Trainer trainer = parseTrainer(line.split(","));
-			storage.addTrainer(trainer.getUsername(), trainer);
+	private <T> String determineKey(T entity) {
+		if (entity instanceof Trainer) {
+			return ((Trainer) entity).getUsername();
+		} else if (entity instanceof Trainee) {
+			return ((Trainee) entity).getUsername();
+		} else if (entity instanceof Training) {
+			return String.valueOf(((Training) entity).getTrainingId());
 		}
+		throw new IllegalArgumentException("Unknown entity type: " + entity.getClass());
 	}
 
-	private void processTraineeFile() throws IOException {
-		List<String> lines = readFile(traineesFilePath);
-		for (String line : lines) {
-			Trainee trainee = parseTrainee(line.split(","));
-			storage.addTrainee(trainee.getUsername(), trainee);
-		}
-	}
-
-	private void processTrainingFile() throws IOException {
-		List<String> lines = readFile(trainingsFilePath);
-		for (String line : lines) {
-			Training training = parseTraining(line.split(","));
-			storage.addTraining(training.getTrainingName(), training);
-		}
-	}
-
-	public List<String> readFile(String filePath) throws IOException {
-		return Files.readAllLines(Paths.get(filePath));
-	}
-
-	private Trainer parseTrainer(String[] parts) {
-		User data = User.extractUserData(parts);
-		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[7]);
-		return new Trainer(data.getUserId(), data.getFirstName(), data.getLastName(),
-				data.getUsername(), data.getPassword(), data.isActive(), trainingType);
-	}
-
-	private Trainee parseTrainee(String[] parts) {
-		User data = User.extractUserData(parts);
-		String program = parts[7];
-		LocalDate enrollmentDate = LocalDate.parse(parts[8]);
-		return new Trainee(data.getUserId(), data.getFirstName(), data.getLastName(),
-				data.getUsername(), data.getPassword(), data.isActive(), program, enrollmentDate);
-	}
-
-	private Training parseTraining(String[] parts) {
-		long trainingId = Long.parseLong(parts[1]);
-		long traineeId = Long.parseLong(parts[2]);
-		long trainerId = Long.parseLong(parts[3]);
-		String trainingName = parts[4];
-		TrainingType trainingType = Enum.valueOf(TrainingType.class, parts[5]);
-		LocalDateTime date = LocalDateTime.parse(parts[6]);
-		Duration duration = Duration.parse(parts[7]);
-		return new Training(trainingId, traineeId, trainerId, trainingName, trainingType, date, duration);
+	@Data
+	public static class DataContainer {
+		private List<Training> training;
+		private List<Trainer> trainers;
+		private List<Trainee> trainees;
 	}
 }

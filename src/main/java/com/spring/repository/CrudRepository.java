@@ -9,7 +9,7 @@ public interface CrudRepository<E, ID> {
 
 	Optional<E> findEntityById(ID id);
 
-	E save(String userName, E entity);
+	E save(E entity);
 
 	void deleteEntityById(ID id);
 
