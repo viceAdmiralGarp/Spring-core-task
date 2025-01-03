@@ -18,7 +18,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	@Override
 	public List<Trainee> getAll() {
-		return storage.getEntities(Trainee.class);
+		return storage.getEntities(Trainee.class).stream().toList();
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	@Override
 	public void save(Trainee entity) {
-		storage.addEntity(Trainee.class, entity.getUsername(), entity);
+
 	}
 
 	@Override

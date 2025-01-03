@@ -16,8 +16,8 @@ public class Storage {
 
 	private final Map<Class<?>, Map<Object, Object>> storage = new HashMap<>();
 
-	public <T extends Entity<?>> void addEntity(Class<? extends T> typeToken, Object id, T entity) {
-		storage.computeIfAbsent(typeToken, k -> new HashMap<>()).put(id, entity);
+	public <T extends Entity<?>> void addEntity( Object id, T entity) {
+		storage.computeIfAbsent(entity.getClass(), k -> new HashMap<>()).put(id, entity);
 	}
 
 	public <T> List<T> getEntities(Class<T> typeToken) {

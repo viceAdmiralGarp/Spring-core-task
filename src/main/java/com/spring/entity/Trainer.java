@@ -16,14 +16,14 @@ public class Trainer extends User {
 
 	private TrainingType trainingType;
 
-	public Trainer(long userId,
+	public Trainer(long id,
 				   String firstName,
 				   String lastName,
 				   String username,
 				   String password,
 				   boolean active,
 				   TrainingType trainingType) {
-		super(userId, firstName, lastName, username, password, active);
+		super(id, firstName, lastName, username, password, active);
 		this.trainingType = trainingType;
 	}
 }

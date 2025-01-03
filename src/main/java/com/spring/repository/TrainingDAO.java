@@ -20,7 +20,7 @@ public class TrainingDAO implements CrudRepository<Training, Long> {
 
 	@Override
 	public List<Training> getAll() {
-		return List.of();
+		return storage.getEntities(Training.class).stream().toList();
 	}
 
 	@Override
