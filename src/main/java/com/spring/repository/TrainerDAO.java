@@ -17,44 +17,22 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	private final Storage storage;
 
-	@Value("${storage.trainers.key}")
-	private String key;
-
 	@Override
 	public List<Trainer> getAll() {
-		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> trainersMap = storageData.get(key);
-
-		if (trainersMap == null) return Collections.emptyList();
-
-		return trainersMap.values()
-				.stream()
-				.map(value -> (Trainer) value)
-				.toList();
+		return List.of();
 	}
 
 	@Override
-	public Optional<Trainer> findEntityById(Long id) {
-		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> trainersMap = storageData.get(key);
-
-		return trainersMap.values()
-				.stream()
-				.map(value -> (Trainer) value)
-				.filter(trainer -> trainer.getUserId() == id)
-				.findFirst();
+	public Optional<Trainer> findEntityById(Long aLong) {
+		return Optional.empty();
 	}
 
 	@Override
-	public Trainer save(String userName, Trainer entity) {
-		return (Trainer) storage.getStorage().get(key).put(userName, entity);
+	public void save(Trainer entity) {
 	}
 
 	@Override
-	public void deleteEntityById(Long id) {
-		Trainer trainer = findEntityById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Trainer with ID %s was not found".formatted(id)));
+	public void deleteEntityById(Long aLong) {
 
-		storage.getStorage().get(key).remove(trainer.getUsername());
 	}
 }

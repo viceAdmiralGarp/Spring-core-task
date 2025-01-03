@@ -17,47 +17,24 @@ public class TrainingDAO implements CrudRepository<Training, Long> {
 
 	private final Storage storage;
 
-	@Value("${storage.trainings.key}")
-	private String key;
 
 	@Override
 	public List<Training> getAll() {
-		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> trainingMap = storageData.get(key);
-
-		if (trainingMap == null) return Collections.emptyList();
-
-		return trainingMap.values()
-				.stream()
-				.map(value -> (Training) value)
-				.toList();
+		return List.of();
 	}
 
 	@Override
-	public Optional<Training> findEntityById(Long id) {
-		Map<String, Map<String, Object>> storageData = storage.getStorage();
-		Map<String, Object> trainingMap = storageData.get(key);
-
-		return trainingMap.values()
-				.stream()
-				.map(value -> (Training) value)
-				.filter(training -> training.getTrainingId() == id)
-				.findFirst();
+	public Optional<Training> findEntityById(Long aLong) {
+		return Optional.empty();
 	}
 
 	@Override
-	public Training save(String id, Training entity) {
-		if (Long.parseLong(id) != entity.getTrainingId())
-			throw new IllegalArgumentException("ID %s does not match training ID %s".formatted(id,entity.getTrainingId()));
+	public void save(Training entity) {
 
-		return (Training) storage.getStorage().get(key).put(id, entity);
 	}
 
 	@Override
-	public void deleteEntityById(Long id) {
-		Training training = findEntityById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Trainer with ID %s was not found".formatted(id)));
+	public void deleteEntityById(Long aLong) {
 
-		storage.getStorage().get(key).remove(String.valueOf(training.getTrainingId()));
 	}
 }

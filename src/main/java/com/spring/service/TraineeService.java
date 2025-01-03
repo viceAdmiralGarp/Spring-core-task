@@ -21,36 +21,36 @@ public class TraineeService {
 		return traineeDAO.getAll();
 	}
 
-	public Trainee findTraineeById(Long id) {
-		return traineeDAO.findEntityById(id)
-				.orElseThrow(() -> new NullPointerException(
-						"Trainee with ID: '%s' not found".formatted(id))
-				);
-	}
-
-	public void createTrainee(TraineeDTO traineeDTO) {
-		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
-		String password = EntityUtils.generatePassword();
-		Trainee trainee = new Trainee(traineeDTO.userId(), traineeDTO.firstName(), traineeDTO.lastName(), userName, password, traineeDTO.isActive(),
-				traineeDTO.address(), traineeDTO.dateOfBirth());
-		traineeDAO.save(userName, trainee);
-	}
-
-	public void deleteTraineeById(Long id) {
-		traineeDAO.deleteEntityById(id);
-	}
-
-	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {
-		Trainee trainee = findTraineeById(id);
-		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
-
-		trainee.setUserId(traineeDTO.userId());
-		trainee.setFirstName(traineeDTO.firstName());
-		trainee.setLastName(traineeDTO.lastName());
-		trainee.setUsername(userName);
-		trainee.setActive(traineeDTO.isActive());
-		trainee.setAddress(traineeDTO.address());
-		trainee.setDateOfBirth(traineeDTO.dateOfBirth());
-	}
+//	public Trainee findTraineeById(Long id) {
+//		return traineeDAO.findEntityById(id)
+//				.orElseThrow(() -> new NullPointerException(
+//						"Trainee with ID: '%s' not found".formatted(id))
+//				);
+//	}
+//
+//	public void createTrainee(TraineeDTO traineeDTO) {
+//		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
+//		String password = EntityUtils.generatePassword();
+//		Trainee trainee = new Trainee(traineeDTO.userId(), traineeDTO.firstName(), traineeDTO.lastName(), userName, password, traineeDTO.isActive(),
+//				traineeDTO.address(), traineeDTO.dateOfBirth());
+//		traineeDAO.save(userName, trainee);
+//	}
+//
+//	public void deleteTraineeById(Long id) {
+//		traineeDAO.deleteEntityById(id);
+//	}
+//
+//	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {
+//		Trainee trainee = findTraineeById(id);
+//		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
+//
+//		trainee.setUserId(traineeDTO.userId());
+//		trainee.setFirstName(traineeDTO.firstName());
+//		trainee.setLastName(traineeDTO.lastName());
+//		trainee.setUsername(userName);
+//		trainee.setActive(traineeDTO.isActive());
+//		trainee.setAddress(traineeDTO.address());
+//		trainee.setDateOfBirth(traineeDTO.dateOfBirth());
+//	}
 
 }
