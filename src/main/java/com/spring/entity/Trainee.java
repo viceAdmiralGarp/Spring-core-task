@@ -23,10 +23,10 @@ public class Trainee extends User{
 				   String lastName,
 				   String username,
 				   String password,
-				   boolean isActive,
+				   boolean active,
 				   String address,
 				   LocalDate dateOfBirth) {
-		super(userId, firstName, lastName, username, password, isActive);
+		super(userId, firstName, lastName, username, password, active);
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
 	}
