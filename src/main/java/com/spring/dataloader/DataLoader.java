@@ -2,6 +2,7 @@ package com.spring.dataloader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.spring.entity.Entity;
 import com.spring.entity.Trainee;
 import com.spring.entity.Trainer;
 import com.spring.entity.Training;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -36,35 +38,6 @@ public class DataLoader {
 		File file = new File(init);
 		DataContainer dataContainer = objectMapper.readValue(file, DataContainer.class);
 
-		addEntitiesToStorage(dataContainer.getTrainers(), Trainer.class);
-		addEntitiesToStorage(dataContainer.getTrainees(), Trainee.class);
-		addEntitiesToStorage(dataContainer.getTraining(), Training.class);
-	}
-
-	private <T> void addEntitiesToStorage(List<T> entities, Class<T> entityClass) {
-		if (entities != null && !entities.isEmpty()) {
-			for (T entity : entities) {
-				String key = determineKey(entity);
-				storage.addEntity(entityClass, key, entity);
-			}
-		}
-	}
-
-	private <T> String determineKey(T entity) {
-		if (entity instanceof Trainer) {
-			return ((Trainer) entity).getUsername();
-		} else if (entity instanceof Trainee) {
-			return ((Trainee) entity).getUsername();
-		} else if (entity instanceof Training) {
-			return String.valueOf(((Training) entity).getTrainingId());
-		}
-		throw new IllegalArgumentException("Unknown entity type: " + entity.getClass());
-	}
-
-	@Data
-	public static class DataContainer {
-		private List<Training> training;
-		private List<Trainer> trainers;
-		private List<Trainee> trainees;
+		dataContainer.getEntities().forEach(entity -> storage.addEntity(entity.getClass(), entity.getId(), entity));
 	}
 }

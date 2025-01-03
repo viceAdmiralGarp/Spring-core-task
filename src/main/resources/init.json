@@ -1,7 +1,7 @@
 {
   "training": [
     {
-      "trainingId": 1,
+      "id": 1,
       "traineeId": 101,
       "trainerId": 201,
       "trainingName": "Yoga",
@@ -10,7 +10,7 @@
       "duration": "PT2H"
     },
     {
-      "trainingId": 2,
+      "id": 2,
       "traineeId": 102,
       "trainerId": 202,
       "trainingName": "Body",
