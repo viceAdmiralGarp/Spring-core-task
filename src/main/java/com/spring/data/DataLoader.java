@@ -1,4 +1,4 @@
-package com.spring.dataloader;
+package com.spring.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-
 
 @Data
 @Component
@@ -26,12 +25,9 @@ public class DataLoader {
 
 	@PostConstruct
 	private void loadData() throws IOException {
-
-		objectMapper.registerModule(new JavaTimeModule());
-
 		File file = new File(init);
+		objectMapper.registerModule(new JavaTimeModule());
 		DataContainer dataContainer = objectMapper.readValue(file, DataContainer.class);
-
 		dataContainer.getEntities().forEach(entity -> storage.addEntity(entity.getId(), entity));
 	}
 }

@@ -7,10 +7,10 @@ public abstract class Entity<ID> {
 
 	private ID id;
 
-	protected Entity() {
+	public Entity() {
 	}
 
-	protected Entity(ID id) {
+	public Entity(ID id) {
 		this.id = id;
 	}
 

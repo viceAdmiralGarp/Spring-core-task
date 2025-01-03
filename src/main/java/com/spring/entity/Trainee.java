@@ -13,12 +13,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Trainee extends User{
+public class Trainee extends User {
 
 	private String address;
 	private LocalDate dateOfBirth;
 
-	public Trainee(long id,
+	public Trainee(long userId,
 				   String firstName,
 				   String lastName,
 				   String username,
@@ -26,9 +26,8 @@ public class Trainee extends User{
 				   boolean active,
 				   String address,
 				   LocalDate dateOfBirth) {
-		super(id, firstName, lastName, username, password, active);
+		super(userId, firstName, lastName, username, password, active);
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
 	}
-
 }

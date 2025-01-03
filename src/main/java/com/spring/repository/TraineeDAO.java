@@ -1,11 +1,14 @@
 package com.spring.repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.spring.data.DataLoader;
 import com.spring.entity.Trainee;
 import com.spring.exception.EntityNotFoundException;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +34,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	@Override
 	public void save(Trainee entity) {
-
+		storage.addEntity(entity.getId(),entity);
 	}
 
 	@Override
