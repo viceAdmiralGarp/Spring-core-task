@@ -37,7 +37,7 @@ public class TraineeService {
 
 	public void deleteTraineeById(Long id) {
 		Trainee trainee = findTraineeById(id);
-		traineeDAO.deleteEntityById(trainee);
+		traineeDAO.deleteEntity(trainee);
 	}
 
 	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {

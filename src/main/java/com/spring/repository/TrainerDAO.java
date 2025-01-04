@@ -37,7 +37,7 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 	}
 
 	@Override
-	public void deleteEntityById(Trainer entity) {
+	public void deleteEntity(Trainer entity) {
 		Map<Class<?>, Map<Object, Object>> storageData = storage.getStorage();
 		Map<Object, Object> objectMap = storageData.get(Trainee.class);
 		objectMap.remove(entity.getUsername());

@@ -1,16 +1,8 @@
 package com.spring.service;
 
-import com.spring.entity.Trainer;
-import com.spring.entity.Training;
-import com.spring.model.TrainerDTO;
-import com.spring.model.TrainingDTO;
-import com.spring.repository.TrainerDAO;
 import com.spring.repository.TrainingDAO;
-import com.spring.utils.EntityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

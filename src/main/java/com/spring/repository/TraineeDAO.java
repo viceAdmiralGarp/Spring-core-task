@@ -35,7 +35,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 	}
 
 	@Override
-	public void deleteEntityById(Trainee entity) {
+	public void deleteEntity(Trainee entity) {
 		Map<Class<?>, Map<Object, Object>> storageData = storage.getStorage();
 		Map<Object, Object> objectMap = storageData.get(Trainee.class);
 		objectMap.remove(entity.getUsername());
