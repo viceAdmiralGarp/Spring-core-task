@@ -43,7 +43,6 @@ public class TraineeService {
 	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {
 		Trainee trainee = findTraineeById(id);
 
-		trainee.setUserId(traineeDTO.userId());
 		trainee.setFirstName(traineeDTO.firstName());
 		trainee.setLastName(traineeDTO.lastName());
 		trainee.setActive(traineeDTO.active());

@@ -44,7 +44,6 @@ public class TrainerService {
 	public void updateTrainerById(Long id, TrainerDTO trainerDTO) {
 		Trainer trainer = findTrainerById(id);
 
-		trainer.setUserId(trainerDTO.userId());
 		trainer.setFirstName(trainerDTO.firstName());
 		trainer.setLastName(trainerDTO.lastName());
 		trainer.setActive(trainerDTO.active());
