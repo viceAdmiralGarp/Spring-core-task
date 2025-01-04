@@ -24,6 +24,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2")
     implementation("org.mapstruct:mapstruct:1.6.3")
+    implementation("org.mapstruct:mapstruct-processor:1.6.3")
 
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")

@@ -6,7 +6,7 @@ public record TrainerDTO(
 		long userId,
 		String firstName,
 		String lastName,
-		boolean isActive,
+		boolean active,
 		TrainingType trainingType
 ) {
 }
