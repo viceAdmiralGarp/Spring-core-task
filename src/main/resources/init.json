@@ -24,8 +24,8 @@
       "userId": 201,
       "firstName": "Alice",
       "lastName": "Smith",
-      "username": "asmith",
-      "password": "password123",
+      "username": "Alice.Smith",
+      "password": "asdasd[564",
       "active": true,
       "trainingType": "BODYBUILDING"
     },
@@ -33,8 +33,8 @@
       "userId": 202,
       "firstName": "Bob",
       "lastName": "Johnson",
-      "username": "bjohnson",
-      "password": "securePass",
+      "username": "Bob.Johnson",
+      "password": "asjfasofpa[564",
       "active": true,
       "trainingType": "YOGA"
     }
@@ -44,8 +44,8 @@
       "userId": 101,
       "firstName": "John",
       "lastName": "Doe",
-      "username": "johndoe",
-      "password": "pass1234",
+      "username": "John.Doe",
+      "password": "hasdk_sdfa12365",
       "active": true,
       "address": "123 Main St, Springfield",
       "dateOfBirth": "1990-05-15"
@@ -54,8 +54,8 @@
       "userId": 102,
       "firstName": "Jane",
       "lastName": "Davis",
-      "username": "janedavis",
-      "password": "mypassword",
+      "username": "Jane.Davis",
+      "password": "alkisdfaisod_sadjas45",
       "active": true,
       "address": "456 Elm St, Riverside",
       "dateOfBirth": "1988-07-22"
