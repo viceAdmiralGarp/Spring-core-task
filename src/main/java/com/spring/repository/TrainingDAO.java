@@ -34,7 +34,8 @@ public class TrainingDAO implements CrudRepository<Training, Long> {
 	}
 
 	@Override
-	public void deleteEntityById(Long aLong) {
+	public void deleteEntityById(Training entity) {
 
 	}
+
 }
