@@ -21,12 +21,10 @@ public class Trainee extends User {
 	public Trainee(long userId,
 				   String firstName,
 				   String lastName,
-				   String username,
-				   String password,
 				   boolean active,
 				   String address,
 				   LocalDate dateOfBirth) {
-		super(userId, firstName, lastName, username, password, active);
+		super(userId, firstName, lastName, active);
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
 	}

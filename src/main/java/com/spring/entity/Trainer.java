@@ -1,5 +1,7 @@
 package com.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,11 +21,9 @@ public class Trainer extends User {
 	public Trainer(long userId,
 				   String firstName,
 				   String lastName,
-				   String username,
-				   String password,
 				   boolean active,
 				   TrainingType trainingType) {
-		super(userId, firstName, lastName, username, password, active);
+		super(userId, firstName, lastName, active);
 		this.trainingType = trainingType;
 	}
 }

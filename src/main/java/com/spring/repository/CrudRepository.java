@@ -13,7 +13,7 @@ public interface CrudRepository<E, ID> {
 
 	void save(E entity);
 
-	void deleteEntityById(ID id);
+	void deleteEntityById(E entity);
 
 
 }

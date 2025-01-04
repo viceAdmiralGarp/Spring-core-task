@@ -6,7 +6,7 @@ public record TraineeDTO(
 		long userId,
 		String firstName,
 		String lastName,
-		boolean isActive,
+		boolean active,
 		String address,
 		LocalDate dateOfBirth) {
 }

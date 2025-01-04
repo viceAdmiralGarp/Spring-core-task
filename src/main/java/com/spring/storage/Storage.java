@@ -1,6 +1,7 @@
 package com.spring.storage;
 
 import com.spring.entity.Entity;
+import com.spring.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,4 +27,5 @@ public class Storage {
 				.map(typeToken::cast)
 				.toList();
 	}
+
 }

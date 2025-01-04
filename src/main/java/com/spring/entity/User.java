@@ -1,18 +1,12 @@
 package com.spring.entity;
 
-import com.spring.storage.Storage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -34,15 +28,15 @@ public abstract class User extends Entity<String> {
 	private String lastName;
 	private String username;
 	private String password;
-	private boolean isActive;
+	private boolean active;
 
-	public User(long userId, String firstName, String lastName, boolean isActive) {
+	public User(long userId, String firstName, String lastName, boolean active) {
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = generateUserName(firstName, lastName);
 		this.password = generatePassword();
-		this.isActive = isActive;
+		this.active = active;
 	}
 
 	static {
