@@ -1,11 +1,11 @@
 package com.spring.service;
 
 import com.spring.entity.Trainee;
-import com.spring.entity.Trainer;
+import com.spring.entity.User;
+import com.spring.exception.EntityNotFoundException;
+import com.spring.mapper.TraineeMapper;
 import com.spring.model.TraineeDTO;
-import com.spring.model.TrainerDTO;
 import com.spring.repository.TraineeDAO;
-import com.spring.utils.EntityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,36 +21,33 @@ public class TraineeService {
 		return traineeDAO.getAll();
 	}
 
-//	public Trainee findTraineeById(Long id) {
-//		return traineeDAO.findEntityById(id)
-//				.orElseThrow(() -> new NullPointerException(
-//						"Trainee with ID: '%s' not found".formatted(id))
-//				);
-//	}
-//
-//	public void createTrainee(TraineeDTO traineeDTO) {
-//		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
-//		String password = EntityUtils.generatePassword();
-//		Trainee trainee = new Trainee(traineeDTO.userId(), traineeDTO.firstName(), traineeDTO.lastName(), userName, password, traineeDTO.isActive(),
-//				traineeDTO.address(), traineeDTO.dateOfBirth());
-//		traineeDAO.save(userName, trainee);
-//	}
-//
-//	public void deleteTraineeById(Long id) {
-//		traineeDAO.deleteEntityById(id);
-//	}
-//
-//	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {
-//		Trainee trainee = findTraineeById(id);
-//		String userName = EntityUtils.generateUserName(traineeDTO.firstName(), traineeDTO.lastName());
-//
-//		trainee.setUserId(traineeDTO.userId());
-//		trainee.setFirstName(traineeDTO.firstName());
-//		trainee.setLastName(traineeDTO.lastName());
-//		trainee.setUsername(userName);
-//		trainee.setActive(traineeDTO.isActive());
-//		trainee.setAddress(traineeDTO.address());
-//		trainee.setDateOfBirth(traineeDTO.dateOfBirth());
-//	}
+	public Trainee findTraineeById(Long id) {
+		return traineeDAO.findEntityById(id)
+				.orElseThrow(() -> new EntityNotFoundException(
+						"Trainee with ID: '%s' not found".formatted(id))
+				);
+	}
 
+	public void createTrainee(TraineeDTO traineeDTO) {
+		Trainee entity = TraineeMapper.INSTANCE.toEntity(traineeDTO);
+		entity.setUsername(User.generateUserName(entity.getFirstName(),entity.getLastName()));
+		entity.setPassword(User.generatePassword());
+		traineeDAO.save(entity);
+	}
+
+	public void deleteTraineeById(Long id) {
+		Trainee trainee = findTraineeById(id);
+		traineeDAO.deleteEntityById(trainee);
+	}
+
+	public void updateTraineeById(Long id, TraineeDTO traineeDTO) {
+		Trainee trainee = findTraineeById(id);
+
+		trainee.setUserId(traineeDTO.userId());
+		trainee.setFirstName(traineeDTO.firstName());
+		trainee.setLastName(traineeDTO.lastName());
+		trainee.setActive(traineeDTO.active());
+		trainee.setAddress(traineeDTO.address());
+		trainee.setDateOfBirth(traineeDTO.dateOfBirth());
+	}
 }

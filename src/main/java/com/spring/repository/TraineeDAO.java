@@ -1,15 +1,12 @@
 package com.spring.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.spring.data.DataLoader;
 import com.spring.entity.Trainee;
-import com.spring.exception.EntityNotFoundException;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -21,7 +18,7 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	@Override
 	public List<Trainee> getAll() {
-		return storage.getEntities(Trainee.class).stream().toList();
+		return storage.getEntities(Trainee.class);
 	}
 
 	@Override
@@ -34,14 +31,13 @@ public class TraineeDAO implements CrudRepository<Trainee, Long> {
 
 	@Override
 	public void save(Trainee entity) {
-		storage.addEntity(entity.getId(),entity);
+		storage.addEntity(entity.getId(), entity);
 	}
 
 	@Override
-	public void deleteEntityById(Long id) {
-		Trainee trainee = findEntityById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Trainer with ID %s not found".formatted(id)));
-
-		storage.getEntities(Trainee.class).remove(trainee);
+	public void deleteEntityById(Trainee entity) {
+		Map<Class<?>, Map<Object, Object>> storageData = storage.getStorage();
+		Map<Object, Object> objectMap = storageData.get(Trainee.class);
+		objectMap.remove(entity.getUsername());
 	}
 }
