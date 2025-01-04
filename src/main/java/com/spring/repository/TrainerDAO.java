@@ -1,5 +1,6 @@
 package com.spring.repository;
 
+import com.spring.entity.Trainee;
 import com.spring.entity.Trainer;
 import com.spring.storage.Storage;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +20,26 @@ public class TrainerDAO implements CrudRepository<Trainer, Long> {
 
 	@Override
 	public List<Trainer> getAll() {
-		return List.of();
+		return storage.getEntities(Trainer.class);
 	}
 
 	@Override
-	public Optional<Trainer> findEntityById(Long aLong) {
-		return Optional.empty();
+	public Optional<Trainer> findEntityById(Long id) {
+		return storage.getEntities(Trainer.class)
+				.stream()
+				.filter(trainer -> trainer.getUserId() == id)
+				.findFirst();
 	}
 
 	@Override
 	public void save(Trainer entity) {
+		storage.addEntity(entity.getId(),entity);
 	}
 
 	@Override
-	public void deleteEntityById(Long aLong) {
-
+	public void deleteEntityById(Trainer entity) {
+		Map<Class<?>, Map<Object, Object>> storageData = storage.getStorage();
+		Map<Object, Object> objectMap = storageData.get(Trainee.class);
+		objectMap.remove(entity.getUsername());
 	}
 }
