@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public record TrainingDTO(
-		long trainingId,
+		long id,
 		long traineeId,
 		long trainerId,
 		String trainingName,

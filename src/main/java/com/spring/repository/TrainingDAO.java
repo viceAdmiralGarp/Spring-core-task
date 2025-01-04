@@ -40,7 +40,7 @@ public class TrainingDAO implements CrudRepository<Training, Long> {
 	@Override
 	public void deleteEntity(Training entity) {
 		Map<Class<?>, Map<Object, Object>> storageData = storage.getStorage();
-		Map<Object, Object> objectMap = storageData.get(Trainee.class);
-		objectMap.remove(entity);
+		Map<Object, Object> objectMap = storageData.get(Training.class);
+		objectMap.remove(entity.getId());
 	}
 }

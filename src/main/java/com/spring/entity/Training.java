@@ -5,16 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Training extends Entity<Long>{
+@ToString(callSuper = true)
+public class Training extends Entity<Long> {
 	private long traineeId;
 	private long trainerId;
 	private String trainingName;
