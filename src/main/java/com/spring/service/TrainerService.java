@@ -55,6 +55,7 @@ public class TrainerService {
 
 		trainer.setFirstName(trainerDTO.firstName());
 		trainer.setLastName(trainerDTO.lastName());
+		trainer.setUsername(User.generateUserName(trainerDTO.firstName(),trainerDTO.lastName()));
 		trainer.setActive(trainerDTO.active());
 		trainer.setTrainingType(trainerDTO.trainingType());
 		logger.info("Updated trainer with ID: {}: {}", id, trainer);

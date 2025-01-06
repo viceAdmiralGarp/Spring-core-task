@@ -54,6 +54,7 @@ public class TraineeService {
 
 		trainee.setFirstName(traineeDTO.firstName());
 		trainee.setLastName(traineeDTO.lastName());
+		trainee.setUsername(User.generateUserName(traineeDTO.firstName(),trainee.getLastName()));
 		trainee.setActive(traineeDTO.active());
 		trainee.setAddress(traineeDTO.address());
 		trainee.setDateOfBirth(traineeDTO.dateOfBirth());
