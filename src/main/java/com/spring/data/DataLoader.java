@@ -24,7 +24,7 @@ public class DataLoader {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@PostConstruct
-	private void loadData() throws IOException {
+	public void loadData() throws IOException {
 		File file = new File(init);
 		objectMapper.registerModule(new JavaTimeModule());
 		DataContainer dataContainer = objectMapper.readValue(file, DataContainer.class);

@@ -13,9 +13,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.27.0")
-    testImplementation("org.mockito:mockito-core:5.14.2")
-    testImplementation("org.mockito:mockito-junit-jupiter:2.17.0")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("org.mockito:mockito-core:3.9.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:3.9.0")
     testImplementation("org.springframework:spring-test:6.2.1")
 
     implementation("org.springframework:spring-core:6.2.1")
@@ -27,7 +26,6 @@ dependencies {
     implementation("org.mapstruct:mapstruct-processor:1.6.3")
     implementation("org.slf4j:slf4j-api:2.0.16")
 
-
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
@@ -35,4 +33,6 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+
 }
+
